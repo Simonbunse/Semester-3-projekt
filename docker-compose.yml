@@ -4,6 +4,7 @@ services:
   nextjs-app:
     build:
       context: ./nextjs-app
+    network_mode: host
     container_name: nextjs-app
     environment:
       MONGODB_URI: "mongodb+srv://simonhastrupjensen:TvrLm9gVK7ahWEPt@cluster0.e3e1e.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0"
@@ -22,5 +23,5 @@ services:
       API_URL: "http://79.171.148.142:3000/"
       MONGODB_URI: "mongodb+srv://simonhastrupjensen:TvrLm9gVK7ahWEPt@cluster0.e3e1e.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0"
     ports:
-      - "9001:9001"
+      - "1883:1883"
     restart: always
