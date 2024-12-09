@@ -13,8 +13,8 @@ services:
 
   mqtt-sub:
     build:
-      context: ./mqtt-service
-    container_name: mqtt-service
+      context: ./mqtt-sub
+    container_name: mqtt-sub
     environment:
       MQTT_USER: "grp2"
       MQTT_PASS: "ElskerOgKode321"
