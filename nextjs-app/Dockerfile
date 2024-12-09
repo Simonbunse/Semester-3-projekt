@@ -23,13 +23,10 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Step 9: Copy the rest of the application code, including the Python script
-COPY . .
+COPY . . 
 
-# Step 10: Build the Next.js app for production
-RUN npm run build
-
-# Step 11: Expose the port for the Next.js app
+# Step 10: Expose the port for the Next.js app
 EXPOSE 3000
 
-# Step 12: Set the entry point to run the Next.js app in production mode
+# Step 11: Set the entry point to run the Next.js app in production mode
 CMD ["npm", "start"]
