@@ -9,8 +9,6 @@ services:
       MONGODB_URI: "mongodb+srv://simonhastrupjensen:TvrLm9gVK7ahWEPt@cluster0.e3e1e.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0"
     ports:
       - "3000:3000"
-    depends_on:
-      - mongodb
     restart: always
 
   mqtt-sub:
