@@ -1,0 +1,31 @@
+ssh shastrup@79.171.148.142
+
+mqtt pub -h 79.171.148.142 -t parking/updates -m "{'parkingLotName': 'LotA', 'timestamp': '2024-10-18T13:41:00', 'spots': [{'isFree': true}, {'isFree': true}, {'isFree': true}, {'isFree': false}, {'isFree': false}]}" -u Grp2 -P ElskerOgKode321
+
+mongodb
+simonhastrupjensen TvrLm9gVK7ahWEPt
+
+{
+    "DeviceId": "1",
+    "data": [
+        {"ArrivalTime": "01/01/2019 11:00:00 PM"},
+        {"DepartureTime": "01/02/2019 12:00:00 AM"},
+        {"VehiclePresent": false}
+    ]
+}
+
+online mongodb: MONGODB_URI="mongodb+srv://simonhastrupjensen:TvrLm9gVK7ahWEPt@cluster0.e3e1e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+docker mongodb: MONGODB_URI="mongodb://simonhastrupjensen:TvrLm9gVK7ahWEPt@mongodb:27017/?retryWrites=true&w=majority"
+
+mqtt pub -h 79.171.148.142 -t parking/update -m "{'streetName':'BOURKE STREET','betweenStreets':'BATMANS HILL DRIVE - HARBOUR ESPLANADE','deviceId':12346,'vehiclePresent':false}" -u grp2 -P ElskerOgKode321
+mqtt sub -h 79.171.148.142 -t parking/update -u grp2 -P ElskerOgKode321
+
+train_data = pd.read_csv(r"C:\Users\simon\OneDrive\IT-Teknolog\projekt3\filtered_training_data.csv")
+test_data = pd.read_csv(r"C:\Users\simon\OneDrive\IT-Teknolog\projekt3\filtered_test_data.csv")
+
+oneshot_encoder = joblib.load(r'C:\temp\onehot_encoder.pkl')
+model = joblib.load(r'C:\temp\parking_availability_model.pkl')
+
+ssh -i "flask-test-aws-key-pai.pem" ubuntu@ec2-16-170-244-210.eu-north-1.compute.amazonaws.com
+
+docker run -p 9001:9001 -e MONGODB_URI="mongodb+srv://simonhastrupjensen:TvrLm9gVK7ahWEPt@cluster0.e3e1e.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0" -e MQTT_USER="grp2" -e MQTT_PASS="ElskerOgKode321" -e MQTT_IP="ws://79.171.148.142:9001" -e API_URL="http://localhost:3000/" mqtt-sub
