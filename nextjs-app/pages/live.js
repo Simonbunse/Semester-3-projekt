@@ -8,7 +8,6 @@ const ParkinglotOverviewPage = () => {
   const [uniqueStreetNames, setUniqueStreetNames] = useState([]);
   const router = useRouter();
 
-  // Function to fetch data from the API
   const fetchStreetsData = async () => {
     try {
       const response = await fetch('/api/streetsdata');
@@ -20,7 +19,7 @@ const ParkinglotOverviewPage = () => {
 
       // Extract unique street names
       const streetNames = data.map(item => item.streetName);
-      const uniqueNames = [...new Set(streetNames)]; // Remove duplicates
+      const uniqueNames = [...new Set(streetNames)];
       setUniqueStreetNames(uniqueNames);
     } catch (error) {
       console.error('Error fetching streets data:', error);
@@ -31,9 +30,9 @@ const ParkinglotOverviewPage = () => {
     fetchStreetsData();
   }, []);
 
-  // Function to handle button click and navigate to the new route
+
   const handleStreetClick = (streetName) => {
-    const formattedName = streetName.toLowerCase().replace(/ /g, '-'); // Convert to kebab-case
+    const formattedName = streetName.toLowerCase().replace(/ /g, '-'); 
     router.push(`/live/${formattedName}`);
   };
 

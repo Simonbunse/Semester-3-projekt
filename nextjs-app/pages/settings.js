@@ -1,4 +1,3 @@
-// pages/settings.js
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import { useState, useEffect } from 'react';
@@ -8,7 +7,6 @@ const SettingsPage = () => {
     const [uniqueStreetNames, setUniqueStreetNames] = useState([]);
     const router = useRouter();
   
-    // Function to fetch data from the API
     const fetchStreetsData = async () => {
       try {
         const response = await fetch('/api/streetsdata');
@@ -18,7 +16,6 @@ const SettingsPage = () => {
         const data = await response.json();
         setStreetsData(data);
   
-        // Extract unique street names
         const streetNames = data.map(item => item.streetName);
         const uniqueNames = [...new Set(streetNames)]; // Remove duplicates
         setUniqueStreetNames(uniqueNames);
@@ -31,9 +28,8 @@ const SettingsPage = () => {
       fetchStreetsData();
     }, []);
   
-    // Function to handle button click and navigate to the new route
     const handleStreetClick = (streetName) => {
-      const formattedName = streetName.toLowerCase().replace(/ /g, '-'); // Convert to kebab-case
+      const formattedName = streetName.toLowerCase().replace(/ /g, '-');
       router.push(`/settings/${formattedName}`);
     };
   

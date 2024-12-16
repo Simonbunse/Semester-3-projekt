@@ -7,7 +7,4 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 1883
-
-# Default command to run the MQTT server
 CMD ["npm", "run", "mqtt"]

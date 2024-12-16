@@ -32,10 +32,8 @@ if (method === 'GET') {
   try {
     const { streetName } = req.query;
 
-    // Build the query object
     const query = streetName ? { streetName: streetName.toUpperCase() } : {};
 
-    // Fetch filtered data
     const streetsData = await StreetsData.find(query);
 
     res.status(200).json(streetsData);
@@ -62,7 +60,6 @@ if (method === 'GET') {
       }
 
       if (addNewDevice) {
-        // Check if the deviceId already exists
         const deviceExists = document.devices.some((device) => device.deviceId === deviceId);
         if (deviceExists) {
           return res.status(400).json({ error: "Device ID already exists in the document" });
@@ -74,7 +71,6 @@ if (method === 'GET') {
 
         return res.status(200).json({ message: "New device added successfully", updatedDocument: document });
       } else {
-        // Update the vehiclePresent status for the given deviceId
         const device = document.devices.find((device) => device.deviceId === deviceId);
 
         if (!device) {

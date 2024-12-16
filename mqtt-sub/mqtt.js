@@ -1,27 +1,18 @@
+//mqtt.js
 const mqtt = require('mqtt');
 
 function handleMessage(message) {
   try {
-    console.log('Raw message content:', message);
 
-    // Replace all single quotes with double quotes
     const jsonString = message.replace(/'/g, '"');
 
-    console.log('Reconstructed JSON string:', jsonString);
-
-    // Parse the reconstructed JSON string
     const jsonObject = JSON.parse(jsonString);
-
-    console.log('Parsed object:', jsonObject);
 
     const apiUrl = `${process.env.API_URL}api/streetsdata`;
     const apiUrlData = `${process.env.API_URL}api/parkdataaus`;
-    console.log('API URL (streetsdata):', apiUrl);
-    console.log('API URL (parkdataaus):', apiUrlData);
 
-    // Send data to the streetsdata API endpoint
     fetch(apiUrl, {
-      method: 'PUT', // Using PUT to update data
+      method: 'PUT', 
       headers: {
         'Content-Type': 'application/json',
       },
@@ -40,9 +31,8 @@ function handleMessage(message) {
         console.error('Error sending data to streetsdata API:', error);
       });
 
-    // Send data to the parkdataaus API endpoint
     fetch(apiUrlData, {
-      method: 'POST', // Using POST to create data
+      method: 'POST', 
       headers: {
         'Content-Type': 'application/json',
       },
@@ -51,7 +41,7 @@ function handleMessage(message) {
         betweenStreets: jsonObject.betweenStreets,
         deviceId: jsonObject.deviceId,
         vehiclePresent: jsonObject.vehiclePresent,
-        timestamp: jsonObject.timestamp, // Include the timestamp
+        timestamp: jsonObject.timestamp,
       }),
     })
       .then(response => response.json())
@@ -71,17 +61,12 @@ function connectToBroker(topic, setParkingSpots) {
   const password = process.env.MQTT_PASS;
   const mqttip = process.env.MQTT_IP;
 
-  console.log('Connecting to MQTT broker...');
-  console.log('MQTT URI:', mqttip);
-  console.log('Username:', user);
-
   const client = mqtt.connect(mqttip, {
     username: user,
     password: password,
   });
 
   client.on('connect', () => {
-    console.log('Connected to MQTT broker');
     client.subscribe(topic, (err) => {
       if (err) {
         console.error('Subscription error:', err);
@@ -97,7 +82,6 @@ function connectToBroker(topic, setParkingSpots) {
 
   client.on('message', (receivedTopic, message) => {
     console.log(`Message received on topic: ${receivedTopic}`);
-    console.log('Raw message content:', message.toString());
 
     if (receivedTopic === topic) {
       handleMessage(message.toString());

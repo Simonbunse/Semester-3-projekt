@@ -5,17 +5,16 @@ const PredictionPage = () => {
   const [formData, setFormData] = useState({
     streetName: '',
     betweenStreets: '',
-    dateTime: '', // Including dateTime input for both date and time
+    dateTime: '',
   });
   const [prediction, setPrediction] = useState(null);
-  const [confidenceScore, setConfidenceScore] = useState(null); // State for confidence score
+  const [confidenceScore, setConfidenceScore] = useState(null);
   const [error, setError] = useState(null);
-  const [streetsData, setStreetsData] = useState([]); // State for all streets data
-  const [uniqueStreetNames, setUniqueStreetNames] = useState([]); // State for unique street names
-  const [betweenStreets, setBetweenStreets] = useState([]); // State for between streets based on selected street
-  const [loading, setLoading] = useState(false); // State to handle loading indicator
+  const [streetsData, setStreetsData] = useState([]);
+  const [uniqueStreetNames, setUniqueStreetNames] = useState([]); 
+  const [betweenStreets, setBetweenStreets] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Fetch the streets data on mount
   useEffect(() => {
     const fetchStreetsData = async () => {
       try {
@@ -26,9 +25,8 @@ const PredictionPage = () => {
         const data = await response.json();
         setStreetsData(data);
 
-        // Extract unique street names
         const streetNames = data.map(item => item.streetName);
-        const uniqueNames = [...new Set(streetNames)]; // Remove duplicates
+        const uniqueNames = [...new Set(streetNames)];
         setUniqueStreetNames(uniqueNames);
       } catch (error) {
         console.error('Error fetching streets data:', error);
@@ -38,22 +36,21 @@ const PredictionPage = () => {
     fetchStreetsData();
   }, []);
 
-  // Fetch between streets based on the selected street name
   useEffect(() => {
     if (formData.streetName) {
       const fetchStreetData = async () => {
         setLoading(true);
         try {
-          const formattedStreetName = encodeURIComponent(formData.streetName); // Format the street name
+          const formattedStreetName = encodeURIComponent(formData.streetName);
           const response = await fetch(`/api/streetsdata?streetName=${formattedStreetName}`);
           if (!response.ok) {
             throw new Error('Failed to fetch street data');
           }
           const data = await response.json();
 
-          // Extract unique between streets (now from a single field)
+
           const betweenStreetsList = data.map(item => item.betweenStreets);
-          const uniqueBetweenStreets = [...new Set(betweenStreetsList)]; // Remove duplicates
+          const uniqueBetweenStreets = [...new Set(betweenStreetsList)];
           setBetweenStreets(uniqueBetweenStreets);
         } catch (error) {
           console.error('Error fetching street data:', error);
@@ -63,7 +60,7 @@ const PredictionPage = () => {
 
       fetchStreetData();
     } else {
-      setBetweenStreets([]); // Clear the between streets if no street is selected
+      setBetweenStreets([]); 
     }
   }, [formData.streetName]);
 
@@ -75,17 +72,17 @@ const PredictionPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setPrediction(null);
-    setConfidenceScore(null); // Reset confidence score
+    setConfidenceScore(null); 
     setError(null);
 
-    // Convert the dateTime input into the required format for the API
+
     const [date, time] = formData.dateTime.split('T');
     const [hour, minute] = time.split(':');
     const dateObj = new Date(formData.dateTime);
-    const dayOfWeek = dateObj.toLocaleString('en-us', { weekday: 'long' }); // Example: "Monday"
-    const month = dateObj.toLocaleString('en-us', { month: 'long' }); // Example: "January"
-    const dayOfMonth = dateObj.getDate(); // Day of the month as a number (e.g., 7)
-    const intervalOfDay = Math.floor((parseInt(hour) * 60 + parseInt(minute)) / 10); // Calculate intervalOfDay
+    const dayOfWeek = dateObj.toLocaleString('en-us', { weekday: 'long' }); 
+    const month = dateObj.toLocaleString('en-us', { month: 'long' }); 
+    const dayOfMonth = dateObj.getDate(); 
+    const intervalOfDay = Math.floor((parseInt(hour) * 60 + parseInt(minute)) / 10); 
 
     const requestBody = {
       streetName: formData.streetName,
@@ -105,8 +102,8 @@ const PredictionPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setPrediction(data.prediction); // Set the prediction result
-        setConfidenceScore(data.confidenceScore); // Set the confidence score
+        setPrediction(data.prediction);
+        setConfidenceScore(data.confidenceScore);
       } else {
         setError(data.error || 'Failed to get prediction.');
       }

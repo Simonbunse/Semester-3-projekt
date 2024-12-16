@@ -1,11 +1,10 @@
-// /pages/parkinglot/
 import React, { useState, useEffect } from 'react';
 import Parkinglotgraphic from '@/components/parkinglotgraphic';
 import { connectToBroker } from '@/lib/mqtt';
 import Layout from '@/components/Layout';
 
 const ParkinglotPage = () => {
-  const [parkingSpots, setParkingSpots] = useState(null); // Start with null to indicate loading
+  const [parkingSpots, setParkingSpots] = useState(null); 
   
   useEffect(() => {
     const disconnect = connectToBroker('parking/updates', setParkingSpots);
@@ -15,7 +14,6 @@ const ParkinglotPage = () => {
     };
   }, []);
 
-  // Show loading state if parking spots are not yet received
   if (!parkingSpots) {
     return (
       <Layout>
@@ -26,7 +24,6 @@ const ParkinglotPage = () => {
     );
   }
 
-  // Extract slot availability from parkingSpots array
   const [slot1 = false, slot2 = false, slot3 = false, slot4 = false, slot5 = false] = parkingSpots.map(spot => spot.isFree || false);
 
   return (

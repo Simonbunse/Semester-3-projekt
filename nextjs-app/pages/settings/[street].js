@@ -58,8 +58,8 @@ const StreetEditPage = () => {
       }
   
       console.log('Device added successfully');
-      await fetchStreetData(); // Refresh data
-      setIsModalOpen(false); // Close modal
+      await fetchStreetData();
+      setIsModalOpen(false); 
     } catch (error) {
       console.error('Error adding device:', error);
     }
@@ -74,7 +74,7 @@ const StreetEditPage = () => {
         },
         body: JSON.stringify({
           streetName: formatStreetName(street),
-          betweenStreets: betweenStreets, // Now a single field
+          betweenStreets: betweenStreets,
           deviceId: parseInt(deviceId, 10),
         }),
       });
@@ -82,7 +82,7 @@ const StreetEditPage = () => {
       if (!response.ok) {
         throw new Error('Failed to delete the device');
       }
-      await fetchStreetData(); // Refresh data
+      await fetchStreetData();
     } catch (error) {
       console.error('Error deleting device:', error);
     }

@@ -1,4 +1,3 @@
-// pages/live/[street].js
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
@@ -7,31 +6,28 @@ const StreetDetailsPage = () => {
   const [streetData, setStreetData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [lastUpdated, setLastUpdated] = useState(null); // Track last updated time
+  const [lastUpdated, setLastUpdated] = useState(null);
   const router = useRouter();
   const { street } = router.query;
 
-  // Format street name
   const formatStreetName = (streetName) => {
     return streetName.toUpperCase().replace(/-/g, ' ');
   };
 
-  // Fetch street data
   const fetchStreetData = async () => {
     try {
-      const formattedStreetName = formatStreetName(street); // Format the street name
+      const formattedStreetName = formatStreetName(street);
       const response = await fetch(`/api/streetsdata?streetName=${formattedStreetName}`);
       if (!response.ok) {
         throw new Error('Failed to fetch street data');
       }
       const data = await response.json();
       
-      // Check if the data has changed by comparing lastUpdated times
       if (data && data.length > 0) {
         const latestUpdate = new Date(data[0].lastUpdated);
         if (!lastUpdated || latestUpdate > lastUpdated) {
           setStreetData(data);
-          setLastUpdated(latestUpdate); // Update the lastUpdated state
+          setLastUpdated(latestUpdate);
         }
       }
       setLoading(false);
@@ -41,20 +37,18 @@ const StreetDetailsPage = () => {
     }
   };
 
-  // Periodically fetch the street data every 10 seconds
   useEffect(() => {
     if (street) {
-      fetchStreetData(); // Fetch initially
+      fetchStreetData();
 
       const intervalId = setInterval(() => {
         fetchStreetData();
       }, 100000);
 
-      return () => clearInterval(intervalId); // Cleanup on component unmount
+      return () => clearInterval(intervalId);
     }
   }, [street, lastUpdated]);
 
-  // Calculate active devices
   const calculateActiveDevices = () => {
     return streetData.reduce((total, data) => {
       const activeDevices = data.devices.filter((device) => device.vehiclePresent).length;

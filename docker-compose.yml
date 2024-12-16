@@ -4,7 +4,6 @@ services:
   nextjs-app:
     build:
       context: ./nextjs-app
-    network_mode: host
     container_name: nextjs-app
     environment:
       MONGODB_URI: "mongodb+srv://simonhastrupjensen:TvrLm9gVK7ahWEPt@cluster0.e3e1e.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0"
@@ -19,9 +18,7 @@ services:
     environment:
       MQTT_USER: "grp2"
       MQTT_PASS: "ElskerOgKode321"
-      MQTT_PORT: 9001
-      API_URL: "http://79.171.148.142:3000/"
+      MQTT_IP: "ws://127.0.0.1:9001"
+      API_URL: "http://nextjs-app:3000/"
       MONGODB_URI: "mongodb+srv://simonhastrupjensen:TvrLm9gVK7ahWEPt@cluster0.e3e1e.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0"
-    ports:
-      - "1883:1883"
     restart: always
